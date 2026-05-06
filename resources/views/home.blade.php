@@ -1,31 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- NAVBAR Professional -->
-<nav class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-gray-800 transition-all duration-300">
-    <div class="container mx-auto px-4 py-3">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center gap-1 group cursor-pointer">
-                <span class="text-2xl font-bold text-red-600 transition-transform group-hover:scale-105">CTIX.</span>
-                <span class="text-2xl font-bold text-white">ID</span>
-                <span class="text-xs text-gray-400 ml-2 hidden sm:block">LAMPUNG</span>
-            </div>
-            <div class="hidden md:flex items-center gap-6">
-                <a href="{{ route('films.index') }}" class="text-gray-300 hover:text-red-500 transition text-sm font-medium">Now Playing</a>
-                <a href="#" class="text-gray-300 hover:text-red-500 transition text-sm font-medium">Coming Soon</a>
-                <a href="#" class="text-gray-300 hover:text-red-500 transition text-sm font-medium">Promotions</a>
-                <a href="#" class="text-gray-300 hover:text-red-500 transition text-sm font-medium">Cinemas</a>
-            </div>
-            <div class="flex items-center gap-3">
-                <span class="text-red-500 text-sm font-semibold cursor-pointer hover:text-red-400 transition">Promo</span>
-                <span class="text-white text-sm cursor-pointer hover:text-gray-300 transition">Login</span>
-                <button class="bg-red-600 px-4 py-1.5 rounded-lg text-white text-sm font-bold hover:bg-red-700 transition shadow-lg">
-                    Daftar
-                </button>
-            </div>
-        </div>
-    </div>
-</nav>
 
 <!-- HERO SECTION dengan Background Gradient -->
 <section class="relative pt-16 overflow-hidden">
