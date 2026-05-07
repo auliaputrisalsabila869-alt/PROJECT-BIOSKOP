@@ -46,9 +46,10 @@
                 </div>
                 <p class="text-gray-300 text-lg mb-4 line-clamp-3">{{ $film->synopsis }}</p>
                 <div class="flex flex-wrap gap-3">
-                    <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-semibold transition flex items-center gap-2">
-                        <i class="fas fa-ticket-alt"></i> Pesan Tiket
-                    </button>
+                    <a href="{{ route('booking.select-schedule', $film->id) }}" 
+   class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-semibold transition flex items-center gap-2">
+    <i class="fas fa-ticket-alt"></i> Pesan Tiket
+</a>
                     @if($film->trailer)
                     <button onclick="openTrailer('{{ $film->trailer }}')" class="bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-xl font-semibold transition flex items-center gap-2">
                         <i class="fas fa-play"></i> Trailer
@@ -101,8 +102,3 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Jadwal Tayang -->
-        <div class="bg-gray-800/30 rounded-2xl p-6 border border-gray-700 h-fit">
-            <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                <

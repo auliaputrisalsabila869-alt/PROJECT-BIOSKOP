@@ -25,12 +25,12 @@
                         <div>
                             <label class="block text-sm text-gray-400 mb-1">Email</label>
                             <input type="email" id="loginEmail" placeholder="contoh@email.com" 
-                                   class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
+                                class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
                         </div>
                         <div>
                             <label class="block text-sm text-gray-400 mb-1">Kata Sandi</label>
                             <input type="password" id="loginPassword" placeholder="••••••••" 
-                                   class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
+                                class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
                         </div>
                         <button type="submit" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-xl font-semibold transition">
                             <i class="fas fa-sign-in-alt mr-2"></i> Masuk
@@ -50,22 +50,22 @@
                         <div>
                             <label class="block text-sm text-gray-400 mb-1">Nama Lengkap</label>
                             <input type="text" id="regName" placeholder="John Doe" 
-                                   class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
+                                class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
                         </div>
                         <div>
                             <label class="block text-sm text-gray-400 mb-1">Email</label>
                             <input type="email" id="regEmail" placeholder="contoh@email.com" 
-                                   class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
+                                class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
                         </div>
                         <div>
                             <label class="block text-sm text-gray-400 mb-1">Kata Sandi</label>
                             <input type="password" id="regPassword" placeholder="Minimal 6 karakter" 
-                                   class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
+                                class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
                         </div>
                         <div>
                             <label class="block text-sm text-gray-400 mb-1">Konfirmasi Sandi</label>
                             <input type="password" id="regConfirmPassword" placeholder="Ulangi sandi" 
-                                   class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
+                                class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
                         </div>
                         <button type="submit" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-xl font-semibold transition">
                             <i class="fas fa-user-plus mr-2"></i> Daftar
