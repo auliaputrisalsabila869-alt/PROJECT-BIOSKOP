@@ -1,5 +1,10 @@
+@extends('layouts.app')
+
+@section('title', $film->judul . ' - CinemaXXI')
+
+@section('content')
 <div class="p-5">
-  <img src="{{ $film->poster }}" class="w-64">
+  <img src="{{ $film->poster }}" class="w-64" alt="{{ $film->judul }}">
   <h1 class="text-2xl font-bold">{{ $film->judul }}</h1>
   <p>{{ $film->sinopsis }}</p>
 
@@ -10,3 +15,4 @@
     </a>
   @endforeach
 </div>
+@endsection

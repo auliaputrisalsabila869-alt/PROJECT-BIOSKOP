@@ -6,7 +6,7 @@
 <!-- HERO dengan Backdrop -->
 <section class="relative pt-16 min-h-[60vh] flex items-end">
     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-         style="background-image: url('{{ $film->backdrop ?? 'https://via.placeholder.com/1920x1080' }}');">
+        style="background-image: url('{{ $film->backdrop ?? 'https://via.placeholder.com/1920x1080' }}');">
         <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>
     </div>
     
@@ -62,8 +62,9 @@
 </section>
 
 <!-- INFO DETAIL & JADWAL -->
-<section class="container mx-auto px-4 py-12">
-    <div class="grid md:grid-cols-3 gap-8">
+<section class="bg-gray-900 min-h-screen pb-12">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid md:grid-cols-3 gap-8">
         <!-- Info Film -->
         <div class="md:col-span-2 space-y-6">
             <div class="bg-gray-800/30 rounded-2xl p-6 border border-gray-700">
@@ -102,3 +103,35 @@
                 </div>
             </div>
         </div>
+
+        <!-- Rekomendasi Film -->
+        <div class="space-y-4">
+            <h2 class="text-2xl font-bold text-white">Rekomendasi</h2>
+            @if(isset($recommendations) && count($recommendations) > 0)
+                @foreach($recommendations as $rec)
+                    <div class="bg-gray-800/50 rounded-xl overflow-hidden border border-gray-700 flex gap-4 cursor-pointer hover:border-red-500 transition" onclick="window.location='{{ route('films.show', $rec->slug) }}'">
+                        @if($rec->poster)
+                            <img src="{{ $rec->poster }}" alt="{{ $rec->judul }}" class="w-24 h-32 object-cover">
+                        @else
+                            <div class="w-24 h-32 bg-gray-700 flex items-center justify-center">
+                                <i class="fas fa-film text-2xl text-gray-500"></i>
+                            </div>
+                        @endif
+                        <div class="py-3 pr-3 flex-1">
+                            <h3 class="font-bold text-white line-clamp-1">{{ $rec->judul }}</h3>
+                            <p class="text-xs text-gray-400 mt-1">{{ $rec->genre }}</p>
+                            <div class="flex items-center gap-1 mt-2">
+                                <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                <span class="text-sm font-semibold text-white">{{ $rec->rating }}</span>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p class="text-gray-400">Belum ada rekomendasi.</p>
+            @endif
+        </div>
+        </div>
+    </div>
+</section>
+@endsection

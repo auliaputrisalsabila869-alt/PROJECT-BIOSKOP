@@ -35,15 +35,7 @@
                     </div>
                 </div>
                 
-                <!-- Genre Filter -->
-                <div>
-                    <select name="genre" class="w-full bg-white border border-gray-300 rounded-xl py-3 px-4 text-gray-900 focus:outline-none focus:border-red-600">
-                        <option value="">Semua Genre</option>
-                        @foreach($genres as $g)
-                            <option value="{{ $g }}" {{ request('genre') == $g ? 'selected' : '' }}>{{ $g }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                
                 
                 <!-- Status Filter -->
                 <div>

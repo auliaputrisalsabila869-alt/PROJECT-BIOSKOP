@@ -70,7 +70,6 @@
             <div class="hidden md:flex items-center gap-8">
                 <a href="{{ route('home') }}#home" class="text-gray-300 hover:text-red-500 transition">Home</a>
                 <a href="{{ route('films.index') }}" class="text-gray-300 hover:text-red-500 transition">Film</a>
-                <a href="{{ route('home') }}#jadwal" class="text-gray-300 hover:text-red-500 transition">Jadwal</a>
                 <a href="{{ route('home') }}#tentang" class="text-gray-300 hover:text-red-500 transition">Tentang</a>
             </div>
             
@@ -99,7 +98,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="relative mt-20 bg-gradient-to-b from-black/50 to-black border-t border-gray-800">
+    <footer class="relative bg-gradient-to-b from-black/50 to-black border-t border-gray-800">
         <!-- Decorative Background -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div class="absolute top-0 left-10 w-72 h-72 bg-red-600/10 rounded-full blur-3xl"></div>
@@ -204,9 +203,6 @@
                         <i class="fab fa-tiktok text-white text-lg"></i>
                     </a>
                 </div>
-
-                <!-- Payment Methods -->
-                
             </div>
         </div>
 
