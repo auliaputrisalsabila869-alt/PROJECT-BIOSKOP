@@ -34,3 +34,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-bookings', [BookingController::class, 'history'])->name('booking.history');
     Route::get('/my-tickets', [BookingController::class, 'myTickets'])->name('booking.my-tickets');
 });
+
+use App\Models\Schedule;
+
+Route::get('/seats', function ($id) {
+    $schedule = Schedule::with(['film', 'studio', 'bookings.bookingSeats'])
+        ->findOrFail($id);
+
+    $seats = \App\Models\Seat::where('studio_id', $schedule->studio_id)->get();
+
+    $seatsByRow = $seats->groupBy('baris');
+
+    return view('booking.select-seats', compact('schedule', 'seatsByRow'));
+});

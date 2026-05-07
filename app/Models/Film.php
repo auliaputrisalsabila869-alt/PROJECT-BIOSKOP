@@ -8,3 +8,4 @@ class Film extends Model
 {
     protected $fillable = ['judul', 'sinopsis', 'durasi', 'genre', 'poster'];
 }
+

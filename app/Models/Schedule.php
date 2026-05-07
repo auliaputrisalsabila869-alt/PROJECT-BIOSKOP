@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Film;
+use App\Models\Studio;
+use App\Models\Booking;
 use Carbon\Carbon;
 
 class Schedule extends Model
