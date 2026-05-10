@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Film; // ← TAMBAH INI
+use App\Models\Film;
 use Illuminate\Support\Str;
 
 class FilmController extends Controller
 {
-    // Data film dummy - TETAP ADA untuk halaman home & detail
+    // Data film dummy - TETAP ADA sebagai fallback untuk halaman detail
     public function getFilms()
     {
         return [
@@ -183,7 +183,7 @@ class FilmController extends Controller
         ];
     }
 
-    // ← SATU method index, ambil dari DATABASE
+    // Index - ambil dari DATABASE
     public function index(Request $request)
     {
         $query = Film::query();
@@ -197,8 +197,11 @@ class FilmController extends Controller
             $query->where('genre', 'like', '%' . $request->genre . '%');
         }
 
+        // ← SORTING DIPERBAIKI, tambah support rating
         $sort = $request->get('sort', 'newest');
-        if ($sort === 'title') {
+        if ($sort === 'rating') {
+            $query->orderByDesc('rating');
+        } elseif ($sort === 'title') {
             $query->orderBy('judul');
         } else {
             $query->latest();
@@ -211,7 +214,7 @@ class FilmController extends Controller
         return view('films.index', compact('films', 'genres', 'status', 'sort'));
     }
 
-    // ← SATU method show, cari dari DATABASE by slug
+    // Show - cari dari DATABASE by slug, fallback ke dummy
     public function show($slug)
     {
         $films = Film::all();
@@ -220,7 +223,7 @@ class FilmController extends Controller
         });
 
         if (!$film) {
-            // Fallback cari di dummy (untuk film yang belum di DB)
+            // Fallback cari di dummy
             $dummyFilms = collect($this->getFilms());
             $film = $dummyFilms->firstWhere('slug', $slug);
         }

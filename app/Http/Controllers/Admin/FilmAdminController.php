@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Film;
+use Illuminate\Http\Request;
+
+class FilmAdminController extends Controller
+{
+    public function index()
+    {
+        $films = Film::latest()->paginate(10);
+        return view('admin.films.index', compact('films'));
+    }
+
+    public function create()
+    {
+        return view('admin.films.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'judul'    => 'required|string|max:255',
+            'sinopsis' => 'required|string',
+            'durasi'   => 'required|integer|min:1',
+            'genre'    => 'required|string',
+            'poster'   => 'nullable|image|max:2048',
+        ]);
+
+        $posterPath = null;
+        if ($request->hasFile('poster')) {
+            $posterPath = '/storage/' . $request->file('poster')->store('posters', 'public');
+        } elseif ($request->filled('poster_url')) {
+            $posterPath = $request->poster_url;
+        }
+
+        Film::create([
+            'judul'    => $request->judul,
+            'sinopsis' => $request->sinopsis,
+            'durasi'   => $request->durasi,
+            'genre'    => $request->genre,
+            'poster'   => $posterPath,
+        ]);
+
+        return redirect()->route('admin.films.index')
+            ->with('success', 'Film "' . $request->judul . '" berhasil ditambahkan!');
+    }
+
+    public function edit(Film $film)
+    {
+        return view('admin.films.edit', compact('film'));
+    }
+
+    public function update(Request $request, Film $film)
+    {
+        $request->validate([
+            'judul'    => 'required|string|max:255',
+            'sinopsis' => 'required|string',
+            'durasi'   => 'required|integer|min:1',
+            'genre'    => 'required|string',
+            'poster'   => 'nullable|image|max:2048',
+        ]);
+
+        $posterPath = $film->poster;
+        if ($request->hasFile('poster')) {
+            $posterPath = '/storage/' . $request->file('poster')->store('posters', 'public');
+        } elseif ($request->filled('poster_url')) {
+            $posterPath = $request->poster_url;
+        }
+
+        $film->update([
+            'judul'    => $request->judul,
+            'sinopsis' => $request->sinopsis,
+            'durasi'   => $request->durasi,
+            'genre'    => $request->genre,
+            'poster'   => $posterPath,
+        ]);
+
+        return redirect()->route('admin.films.index')
+            ->with('success', 'Film berhasil diupdate!');
+    }
+
+    public function destroy(Film $film)
+    {
+        $film->delete();
+        return redirect()->route('admin.films.index')
+            ->with('success', 'Film berhasil dihapus!');
+    }
+}

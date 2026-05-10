@@ -4,7 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\FilmAdminController;
+use App\Http\Controllers\Admin\JadwalAdminController;
+use App\Http\Controllers\Admin\KursiAdminController;
+use App\Http\Controllers\Admin\BookingAdminController;
+use App\Http\Controllers\Admin\LaporanAdminController;
 
+// === HOME ===
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -12,12 +19,9 @@ Route::get('/', function () {
 // === AUTH ROUTES ===
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('daftar');
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-// === END AUTH ROUTES ===
 
 // === FILM ROUTES ===
 Route::get('/films', [FilmController::class, 'index'])->name('films.index');
@@ -34,4 +38,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/booking/{bookingId}/success', [BookingController::class, 'success'])->name('booking.success');
     Route::get('/my-bookings', [BookingController::class, 'history'])->name('booking.history');
     Route::get('/my-tickets', [BookingController::class, 'myTickets'])->name('booking.my-tickets');
+});
+
+// === ADMIN ROUTES (harus login + admin) ===
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::resource('films', FilmAdminController::class);
+    Route::resource('jadwal', JadwalAdminController::class);
+    Route::get('kursi', [KursiAdminController::class, 'index'])->name('kursi.index');
+    Route::post('kursi/generate', [KursiAdminController::class, 'generate'])->name('kursi.generate');
+    Route::delete('kursi/{seat}', [KursiAdminController::class, 'destroy'])->name('kursi.destroy');
+    Route::get('bookings', [BookingAdminController::class, 'index'])->name('bookings.index');
+    Route::patch('bookings/{booking}/status', [BookingAdminController::class, 'updateStatus'])->name('bookings.update-status');
+    Route::get('laporan', [LaporanAdminController::class, 'index'])->name('laporan.index');
 });
