@@ -488,13 +488,13 @@
             logout();
         });
         
-        // Enter key handling untuk form di dalam modal (biar lebih modern)
+        // Enter key handling untuk form di dalam modal
         const loginPass = document.getElementById('loginPassword');
         const regConfirm = document.getElementById('regConfirmPassword');
         loginPass.addEventListener('keypress', (e) => { if(e.key === 'Enter') doLoginBtn.click(); });
         regConfirm.addEventListener('keypress', (e) => { if(e.key === 'Enter') doRegisterBtn.click(); });
         
-        // Initial update navbar
+        //navbar
         updateNavbarAuth();
         
         // Smooth scrolling untuk navbar links (tetap mempertahankan interaksi)

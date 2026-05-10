@@ -74,37 +74,6 @@
         </div>
     </div>
 </section>
-
-<!-- QUICK ACCESS MENU -->
-<section class="container mx-auto px-4 mt-12">
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <a href="#" class="group relative overflow-hidden rounded-2xl">
-            <div class="absolute inset-0 bg-gradient-to-r from-red-600 to-red-700 opacity-90 group-hover:scale-110 transition duration-500"></div>
-            <div class="relative p-6 text-center">
-                <i class="fas fa-calendar-alt text-4xl text-white mb-2"></i>
-                <h3 class="text-white font-bold text-lg">Jadwal Tayang</h3>
-                <p class="text-white/80 text-sm">Cek jadwal hari ini</p>
-            </div>
-        </a>
-        <a href="#" class="group relative overflow-hidden rounded-2xl">
-            <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-700 opacity-90 group-hover:scale-110 transition duration-500"></div>
-            <div class="relative p-6 text-center">
-                <i class="fas fa-ticket-alt text-4xl text-white mb-2"></i>
-                <h3 class="text-white font-bold text-lg">Pesan Tiket</h3>
-                <p class="text-white/80 text-sm">Booking sekarang</p>
-            </div>
-        </a>
-        <a href="#" class="group relative overflow-hidden rounded-2xl">
-            <div class="absolute inset-0 bg-gradient-to-r from-green-600 to-teal-700 opacity-90 group-hover:scale-110 transition duration-500"></div>
-            <div class="relative p-6 text-center">
-                <i class="fas fa-gift text-4xl text-white mb-2"></i>
-                <h3 class="text-white font-bold text-lg">Promo Spesial</h3>
-                <p class="text-white/80 text-sm">Diskon & hadiah</p>
-            </div>
-        </a>
-    </div>
-</section>
-
 <!-- NOW SHOWING SECTION -->
 <section class="container mx-auto px-4 mt-16">
     <div class="flex justify-between items-center mb-6">
@@ -126,9 +95,9 @@
                 <img src="/martian.jpg" alt="The Martian" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                 <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black transform translate-y-full group-hover:translate-y-0 transition">
-                    <button class="w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700">
+                    <a href="{{ route('films.show', 'the-martian') }}" class="block w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700 text-center">
                         Beli Tiket
-                    </button>
+                    </a>
                 </div>
                 <div class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                     PG-13
@@ -155,9 +124,9 @@
             <div class="relative overflow-hidden rounded-xl mb-3">
                 <img src="/ylbh.jpg" alt="Project: Kapali Guru" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
                 <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black transform translate-y-full group-hover:translate-y-0 transition">
-                    <button class="w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700">
+                    <a href="{{ route('films.show', 'project-kapali-guru') }}" class="block w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700 text-center">
                         Beli Tiket
-                    </button>
+                    </a>
                 </div>
             </div>
             <div>
@@ -181,9 +150,9 @@
             <div class="relative overflow-hidden rounded-xl mb-3">
                 <img src="/spider.jpg" alt="Spider-Verse" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
                 <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black transform translate-y-full group-hover:translate-y-0 transition">
-                    <button class="w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700">
+                    <a href="{{ route('films.show', 'the-spider-verse') }}" class="block w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700 text-center">
                         Beli Tiket
-                    </button>
+                    </a>
                 </div>
             </div>
             <div>
@@ -207,9 +176,9 @@
                 <img src="/ayah.jpg" alt="Ayah Ini Arahnya Kemana" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                 <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black transform translate-y-full group-hover:translate-y-0 transition">
-                    <button class="w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700">
+                    <a href="{{ route('films.show', 'ayah-ini-arahnya-kemana') }}" class="block w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700 text-center">
                         Beli Tiket
-                    </button>
+                    </a>
                 </div>
                 <div class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                     PG-13

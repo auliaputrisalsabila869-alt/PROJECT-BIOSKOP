@@ -46,7 +46,7 @@
                 </div>
                 <p class="text-gray-300 text-lg mb-4 line-clamp-3">{{ $film->synopsis }}</p>
                 <div class="flex flex-wrap gap-3">
-                    <a href="{{ route('booking.select-schedule', $film->id) }}" 
+                    <a href="{{ route('booking.select-studio', $film->id) }}" 
    class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-semibold transition flex items-center gap-2">
     <i class="fas fa-ticket-alt"></i> Pesan Tiket
 </a>
@@ -97,8 +97,10 @@
             <div class="bg-gray-800/30 rounded-2xl p-6 border border-gray-700">
                 <h2 class="text-2xl font-bold text-white mb-4">Pemeran</h2>
                 <div class="flex flex-wrap gap-2">
-                    @foreach($film->cast as $actor)
-                        <span class="bg-gray-700 px-3 py-1 rounded-full text-sm text-gray-300">{{ $actor }}</span>
+                    @foreach($film->cast ?? [] as $actor)
+                    <span class="bg-gray-700 px-3 py-1 rounded-full text-sm text-gray-300">
+                    {{ $actor }}
+                    </span>
                     @endforeach
                 </div>
             </div>

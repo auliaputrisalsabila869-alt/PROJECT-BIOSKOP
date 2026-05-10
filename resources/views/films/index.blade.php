@@ -27,10 +27,10 @@
                 <div class="md:col-span-2">
                     <div class="relative">
                         <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" 
-                            name="search" 
+                        <input type="text"
+                            name="search"
                             value="{{ request('search') }}"
-                            placeholder="Cari film, sutradara, atau genre..." 
+                            placeholder="Cari film, sutradara, atau genre..."
                             class="w-full bg-white border border-gray-300 rounded-xl py-3 pl-12 pr-4 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-red-600 transition">
                     </div>
                 </div>
@@ -117,9 +117,9 @@
                     @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                     <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black transform translate-y-full group-hover:translate-y-0 transition">
-                        <button class="w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700">
+                        <a href="{{ route('films.show', $film->slug) }}" class="block w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700 text-center">
                             Pesan Tiket
-                        </button>
+                        </a>
                     </div>
                     @if($film->age_rating)
                         <div class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
@@ -201,9 +201,9 @@
                         </div>
                     </div>
                     <div class="flex items-center">
-                        <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition whitespace-nowrap">
+                        <a href="{{ route('films.show', $film->slug) }}" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition whitespace-nowrap">
                             Pesan Tiket
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

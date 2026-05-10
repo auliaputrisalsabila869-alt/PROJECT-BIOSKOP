@@ -25,6 +25,7 @@ Route::get('/films/{slug}', [FilmController::class, 'show'])->name('films.show')
 
 // === BOOKING ROUTES (harus login) ===
 Route::middleware(['auth'])->group(function () {
+    Route::get('/booking/film/{filmId}/studio', [BookingController::class, 'selectStudio'])->name('booking.select-studio');
     Route::get('/booking/film/{filmId}/schedule', [BookingController::class, 'selectSchedule'])->name('booking.select-schedule');
     Route::get('/booking/schedule/{scheduleId}/seats', [BookingController::class, 'selectSeats'])->name('booking.select-seats');
     Route::post('/booking/schedule/{scheduleId}/process', [BookingController::class, 'processBooking'])->name('booking.process');
@@ -33,17 +34,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/booking/{bookingId}/success', [BookingController::class, 'success'])->name('booking.success');
     Route::get('/my-bookings', [BookingController::class, 'history'])->name('booking.history');
     Route::get('/my-tickets', [BookingController::class, 'myTickets'])->name('booking.my-tickets');
-});
-
-use App\Models\Schedule;
-
-Route::get('/seats', function ($id) {
-    $schedule = Schedule::with(['film', 'studio', 'bookings.bookingSeats'])
-        ->findOrFail($id);
-
-    $seats = \App\Models\Seat::where('studio_id', $schedule->studio_id)->get();
-
-    $seatsByRow = $seats->groupBy('baris');
-
-    return view('booking.select-seats', compact('schedule', 'seatsByRow'));
 });
