@@ -174,117 +174,74 @@
         @yield('content')
     </main>
 
-    <!-- Footer -->
-    <footer class="relative bg-gradient-to-b from-gray-900 to-black border-t border-gray-800 mt-16">
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute top-0 left-10 w-72 h-72 bg-red-600/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 right-10 w-72 h-72 bg-purple-600/10 rounded-full blur-3xl"></div>
-        </div>
+<!-- Footer -->
+<footer class="bg-gray-900 border-t border-gray-800 mt-auto">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
 
-        <div class="relative max-w-7xl mx-auto px-6 py-16">
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
-                <div class="md:col-span-1">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-film text-white text-lg"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-lg font-black text-white">CTIX.<span class="text-red-500">ID</span></h2>
-                            <p class="text-xs text-gray-400">Lampung</p>
-                        </div>
+            {{-- Brand --}}
+            <div class="col-span-2 md:col-span-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-film text-white text-sm"></i>
                     </div>
-                    <p class="text-gray-400 text-sm leading-relaxed">Platform bioskop online terpercaya untuk pengalaman menonton terbaik.</p>
+                    <h2 class="text-lg font-black text-white">CTIX<span class="text-red-500">ID</span></h2>
                 </div>
-
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-sm flex items-center gap-2">
-                        <i class="fas fa-link text-red-500"></i> Quick Links
-                    </h4>
-                    <ul class="space-y-2">
-                        <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Beranda</a></li>
-                        <li><a href="{{ route('films.index') }}" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Daftar Film</a></li>
-                        @auth
-                        <li><a href="{{ route('booking.my-tickets') }}" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Tiket Saya</a></li>
-                        <li><a href="{{ route('booking.history') }}" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Riwayat</a></li>
-                        @endauth
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-sm flex items-center gap-2">
-                        <i class="fas fa-building text-red-500"></i> Perusahaan
-                    </h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Tentang Kami</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Karir</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Blog</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-sm flex items-center gap-2">
-                        <i class="fas fa-headset text-red-500"></i> Dukungan
-                    </h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Bantuan</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> FAQ</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition text-sm flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Kebijakan Privasi</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-white font-bold mb-4 text-sm flex items-center gap-2">
-                        <i class="fas fa-bell text-red-500"></i> Newsletter
-                    </h4>
-                    <p class="text-gray-400 text-sm mb-3">Dapatkan update dan promo terbaru.</p>
-                    <form class="space-y-2" onsubmit="return false;">
-                        <input type="email" placeholder="Email Anda"
-                               class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-red-500 transition">
-                        <button type="submit"
-                                class="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 rounded-lg px-3 py-2 text-white font-semibold text-sm transition">
-                            Subscribe
-                        </button>
-                    </form>
+                <p class="text-gray-400 text-xs leading-relaxed">Platform bioskop online terpercaya di Lampung.</p>
+                <div class="flex gap-2 mt-3">
+                    <a href="#" class="w-7 h-7 bg-gray-800 hover:bg-red-600 rounded-lg flex items-center justify-center transition">
+                        <i class="fab fa-instagram text-white text-xs"></i>
+                    </a>
+                    <a href="#" class="w-7 h-7 bg-gray-800 hover:bg-red-600 rounded-lg flex items-center justify-center transition">
+                        <i class="fab fa-tiktok text-white text-xs"></i>
+                    </a>
+                    <a href="#" class="w-7 h-7 bg-gray-800 hover:bg-red-600 rounded-lg flex items-center justify-center transition">
+                        <i class="fab fa-youtube text-white text-xs"></i>
+                    </a>
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-gray-500 text-sm">
-                    &copy; 2026 CTIX.ID Lampung. Semua hak dilindungi.
-                    Dibuat dengan <i class="fas fa-heart text-red-600"></i> untuk pengalaman menonton terbaik.
-                </div>
-                <div class="flex gap-3">
-                    @foreach(['instagram' => 'fab fa-instagram', 'facebook-f' => 'fab fa-facebook-f', 'x-twitter' => 'fab fa-x-twitter', 'youtube' => 'fab fa-youtube', 'tiktok' => 'fab fa-tiktok'] as $platform => $icon)
-                    <a href="#" class="w-9 h-9 bg-gray-800/50 hover:bg-red-600 rounded-full flex items-center justify-center transition transform hover:scale-110">
-                        <i class="{{ $icon }} text-white text-sm"></i>
-                    </a>
-                    @endforeach
-                </div>
+            {{-- Film --}}
+            <div>
+                <h4 class="text-white font-bold text-sm mb-3">Film</h4>
+                <ul class="space-y-2">
+                    <li><a href="{{ route('films.index') }}" class="text-gray-400 hover:text-white text-xs transition">Sedang Tayang</a></li>
+                    <li><a href="{{ route('films.index') }}?status=coming_soon" class="text-gray-400 hover:text-white text-xs transition">Coming Soon</a></li>
+                </ul>
+            </div>
+
+            {{-- Akun --}}
+            <div>
+                <h4 class="text-white font-bold text-sm mb-3">Akun</h4>
+                <ul class="space-y-2">
+                    @auth
+                    <li><a href="{{ route('booking.my-tickets') }}" class="text-gray-400 hover:text-white text-xs transition">Tiket Saya</a></li>
+                    <li><a href="{{ route('booking.history') }}" class="text-gray-400 hover:text-white text-xs transition">Riwayat</a></li>
+                    @else
+                    <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-white text-xs transition">Masuk</a></li>
+                    <li><a href="{{ route('daftar') }}" class="text-gray-400 hover:text-white text-xs transition">Daftar</a></li>
+                    @endauth
+                </ul>
+            </div>
+
+            {{-- Info --}}
+            <div>
+                <h4 class="text-white font-bold text-sm mb-3">Info</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white text-xs transition">Tentang Kami</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white text-xs transition">Bantuan</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white text-xs transition">Kebijakan Privasi</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white text-xs transition">Syarat & Ketentuan</a></li>
+                </ul>
             </div>
         </div>
 
-        {{-- Scroll to Top --}}
-        <button onclick="window.scrollTo({top:0,behavior:'smooth'})"
-                id="scrollTop"
-                class="fixed bottom-8 right-8 w-11 h-11 bg-gradient-to-r from-red-600 to-orange-600 rounded-full flex items-center justify-center text-white shadow-lg transition transform hover:scale-110 opacity-0 pointer-events-none"
-                id="scrollTop">
-            <i class="fas fa-arrow-up text-sm"></i>
-        </button>
-
-        <script>
-            window.addEventListener('scroll', () => {
-                const btn = document.getElementById('scrollTop');
-                if (!btn) return;
-                if (window.scrollY > 300) {
-                    btn.classList.remove('opacity-0', 'pointer-events-none');
-                    btn.classList.add('opacity-100', 'pointer-events-auto');
-                } else {
-                    btn.classList.add('opacity-0', 'pointer-events-none');
-                    btn.classList.remove('opacity-100', 'pointer-events-auto');
-                }
-            });
-        </script>
-    </footer>
+        <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
+            <p class="text-gray-500 text-xs">&copy; 2026 CTIX.ID Lampung. Semua hak dilindungi.</p>
+            <p class="text-gray-600 text-xs">Dibuat dengan <i class="fas fa-heart text-red-500"></i> untuk pengalaman menonton terbaik</p>
+        </div>
+    </div>
+</footer>
 
     <script>
         // Toggle user dropdown
