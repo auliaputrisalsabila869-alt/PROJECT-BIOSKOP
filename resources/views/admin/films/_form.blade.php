@@ -42,10 +42,10 @@
         <label class="block text-sm font-semibold text-gray-700 mb-1.5">Age Rating</label>
         <select name="age_rating"
                 class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition">
-            <option value="G"    {{ old('age_rating', $film?->age_rating) == 'G'    ? 'selected' : '' }}>G (Semua Umur)</option>
-            <option value="PG"   {{ old('age_rating', $film?->age_rating) == 'PG'   ? 'selected' : '' }}>PG</option>
-            <option value="PG-13"{{ old('age_rating', $film?->age_rating) == 'PG-13'? 'selected' : '' }}>PG-13</option>
-            <option value="R"    {{ old('age_rating', $film?->age_rating) == 'R'    ? 'selected' : '' }}>R</option>
+            <option value="G"     {{ old('age_rating', $film?->age_rating) == 'G'     ? 'selected' : '' }}>G (Semua Umur)</option>
+            <option value="PG"    {{ old('age_rating', $film?->age_rating) == 'PG'    ? 'selected' : '' }}>PG</option>
+            <option value="PG-13" {{ old('age_rating', $film?->age_rating) == 'PG-13' ? 'selected' : '' }}>PG-13</option>
+            <option value="R"     {{ old('age_rating', $film?->age_rating) == 'R'     ? 'selected' : '' }}>R</option>
         </select>
     </div>
 </div>
@@ -69,6 +69,27 @@
             </option>
         </select>
     </div>
+</div>
+
+{{-- Field Pemeran --}}
+<div>
+    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Pemeran</label>
+    @php
+        $castValue = '';
+        if (old('cast')) {
+            $castValue = old('cast');
+        } elseif ($film?->cast) {
+            $castArr = is_array($film->cast) 
+                ? $film->cast 
+                : json_decode($film->cast, true);
+            $castValue = is_array($castArr) ? implode(', ', $castArr) : '';
+        }
+    @endphp
+    <input type="text" name="cast"
+           value="{{ $castValue }}"
+           placeholder="Matt Damon, Jessica Chastain, Kristen Wiig"
+           class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition">
+    <p class="text-xs text-gray-400 mt-1">Pisahkan dengan koma. Contoh: Matt Damon, Jessica Chastain</p>
 </div>
 
 <div>

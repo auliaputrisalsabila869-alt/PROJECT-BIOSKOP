@@ -36,12 +36,29 @@ class FilmAdminController extends Controller
             $posterPath = $request->poster_url;
         }
 
+        // Handle cast - konversi string ke array
+        $castData = null;
+        if ($request->filled('cast')) {
+            $castData = array_values(array_filter(
+                array_map('trim', explode(',', $request->cast))
+            ));
+        }
+
         Film::create([
-            'judul'    => $request->judul,
-            'sinopsis' => $request->sinopsis,
-            'durasi'   => $request->durasi,
-            'genre'    => $request->genre,
-            'poster'   => $posterPath,
+            'judul'        => $request->judul,
+            'sinopsis'     => $request->sinopsis,
+            'durasi'       => $request->durasi,
+            'genre'        => $request->genre,
+            'poster'       => $posterPath,
+            'rating'       => $request->rating ?? 0,
+            'rating_count' => $request->rating_count ?? 0,
+            'age_rating'   => $request->age_rating ?? 'PG-13',
+            'trailer'      => $request->trailer,
+            'director'     => $request->director,
+            'cast'         => $castData,
+            'backdrop'     => $request->backdrop,
+            'release_date' => $request->release_date ?: null,
+            'status'       => $request->status ?? 'now_showing',
         ]);
 
         return redirect()->route('admin.films.index')
@@ -70,16 +87,32 @@ class FilmAdminController extends Controller
             $posterPath = $request->poster_url;
         }
 
+        // Handle cast - konversi string ke array
+        $castData = $film->cast; // default: tetap cast lama
+        if ($request->filled('cast')) {
+            $castData = array_values(array_filter(
+                array_map('trim', explode(',', $request->cast))
+            ));
+        }
+
         $film->update([
-            'judul'    => $request->judul,
-            'sinopsis' => $request->sinopsis,
-            'durasi'   => $request->durasi,
-            'genre'    => $request->genre,
-            'poster'   => $posterPath,
+            'judul'        => $request->judul,
+            'sinopsis'     => $request->sinopsis,
+            'durasi'       => $request->durasi,
+            'genre'        => $request->genre,
+            'poster'       => $posterPath,
+            'rating'       => $request->rating ?? $film->rating,
+            'age_rating'   => $request->age_rating ?? $film->age_rating,
+            'trailer'      => $request->trailer ?? $film->trailer,
+            'director'     => $request->director ?? $film->director,
+            'cast'         => $castData,
+            'backdrop'     => $request->backdrop ?? $film->backdrop,
+            'release_date' => $request->release_date ?: $film->release_date,
+            'status'       => $request->status ?? $film->status,
         ]);
 
         return redirect()->route('admin.films.index')
-            ->with('success', 'Film berhasil diupdate!');
+            ->with('success', 'Film "' . $film->judul . '" berhasil diupdate!');
     }
 
     public function destroy(Film $film)

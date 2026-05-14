@@ -163,9 +163,16 @@
 
                 {{-- Pemeran --}}
                 @php
-                    $castData = $film->cast ?? [];
-                    if (is_string($castData)) $castData = json_decode($castData, true) ?? [];
+                    $castData = [];
+                    $rawCast = \DB::table('films')->where('id', $film->id)->value('cast');
+                    if ($rawCast) {
+                        $decoded = json_decode($rawCast, true);
+                        if (is_array($decoded)) {
+                            $castData = $decoded;
+                        }
+                    }
                 @endphp
+
                 @if(!empty($castData))
                 <div class="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
                     <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
@@ -173,7 +180,9 @@
                     </h2>
                     <div class="flex flex-wrap gap-2">
                         @foreach($castData as $actor)
-                        <span class="bg-gray-700 text-gray-300 px-3 py-1.5 rounded-full text-sm">{{ $actor }}</span>
+                        <span class="bg-gray-700 text-gray-300 px-3 py-1.5 rounded-full text-sm">
+                            {{ $actor }}
+                        </span>
                         @endforeach
                     </div>
                 </div>

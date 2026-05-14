@@ -8,24 +8,15 @@ use Illuminate\Support\Str;
 class Film extends Model
 {
     protected $fillable = [
-    'judul',
-    'sinopsis',
-    'durasi',
-    'genre',
-    'poster',
-    'rating',
-    'rating_count',
-    'age_rating',
-    'trailer',
-    'director',
-    'backdrop',
-    'release_date',
-    'status',
-];
+        'judul', 'sinopsis', 'durasi', 'genre', 'poster',
+        'rating', 'rating_count', 'age_rating',
+        'trailer', 'director', 'cast', 'backdrop',
+        'release_date', 'status',
+    ];
 
     protected $casts = [
         'release_date' => 'date',
-        'cast'         => 'array',
+        'cast'         => 'array', // ← pastikan ini ada
     ];
 
     public function getSlugAttribute()
