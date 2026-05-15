@@ -40,15 +40,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-tickets', [BookingController::class, 'myTickets'])->name('booking.my-tickets');
 });
 
-// === ADMIN ROUTES (harus login + admin) ===
+/// === ADMIN ROUTES (harus login + admin) ===
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    // Film
     Route::resource('films', FilmAdminController::class);
+
+    // Jadwal - kembali ke resource biasa
     Route::resource('jadwal', JadwalAdminController::class);
+
+    // Kursi
     Route::get('kursi', [KursiAdminController::class, 'index'])->name('kursi.index');
     Route::post('kursi/generate', [KursiAdminController::class, 'generate'])->name('kursi.generate');
     Route::delete('kursi/{seat}', [KursiAdminController::class, 'destroy'])->name('kursi.destroy');
+
+    // Booking
     Route::get('bookings', [BookingAdminController::class, 'index'])->name('bookings.index');
     Route::patch('bookings/{booking}/status', [BookingAdminController::class, 'updateStatus'])->name('bookings.update-status');
+
+    // Laporan
     Route::get('laporan', [LaporanAdminController::class, 'index'])->name('laporan.index');
 });
