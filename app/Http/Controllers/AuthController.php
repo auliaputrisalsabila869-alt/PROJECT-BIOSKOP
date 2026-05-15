@@ -31,32 +31,30 @@ class AuthController extends Controller
      * Proses login user.
      */
     public function login(Request $request)
-    {
-        // Validasi input
-        $credentials = $request->validate([
-            'email'    => ['required', 'email'],
-            'password' => ['required'],
-        ], [
-            'email.required'    => 'Email wajib diisi.',
-            'email.email'       => 'Format email tidak valid.',
-            'password.required' => 'Password wajib diisi.',
-        ]);
+{
+    $credentials = $request->validate([
+        'email'    => ['required', 'email'],
+        'password' => ['required'],
+    ], [
+        'email.required'    => 'Email wajib diisi.',
+        'email.email'       => 'Format email tidak valid.',
+        'password.required' => 'Password wajib diisi.',
+    ]);
 
-        // Coba autentikasi
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
+    if (Auth::attempt($credentials, $request->filled('remember'))) {
+        $request->session()->regenerate();
 
-            return redirect()
-                ->intended(route('home'))
-                ->with('success', 'Selamat datang kembali, ' . Auth::user()->name . '!');
+        if (Auth::user()->is_admin == 1) {
+            return redirect('/admin');
         }
 
-        // Gagal login
-        return back()
-            ->withErrors(['email' => 'Email atau password salah.'])
-            ->onlyInput('email');
+        return redirect('/');
     }
 
+    return back()
+        ->withErrors(['email' => 'Email atau password salah.'])
+        ->onlyInput('email');
+}
     /**
      * Proses register user baru.
      */
@@ -91,9 +89,11 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()
-            ->route('home')
-            ->with('success', 'Akun berhasil dibuat! Selamat datang, ' . $user->name . '!');
+        if (Auth::user()->is_admin == 1) {
+    return redirect('/admin');
+}
+
+return redirect('/');
     }
 
     /**

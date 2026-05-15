@@ -12,9 +12,7 @@ use App\Http\Controllers\Admin\BookingAdminController;
 use App\Http\Controllers\Admin\LaporanAdminController;
 
 // === HOME ===
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [FilmController::class, 'home'])->name('home');
 
 // === AUTH ROUTES ===
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

@@ -7,7 +7,22 @@ use App\Models\Film;
 use Illuminate\Support\Str;
 
 class FilmController extends Controller
+{   
+    public function home()
 {
+    $nowShowing = Film::where('status', 'now_showing')
+        ->latest()
+        ->take(5)
+        ->get();
+
+    $comingSoon = Film::where('status', 'coming_soon')
+        ->orderBy('release_date')
+        ->take(4)
+        ->get();
+
+    return view('home', compact('nowShowing', 'comingSoon'));
+}
+
     public function index(Request $request)
     {
         $search = $request->get('search');

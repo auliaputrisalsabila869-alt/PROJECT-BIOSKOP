@@ -74,6 +74,7 @@
         </div>
     </div>
 </section>
+
 <!-- NOW SHOWING SECTION -->
 <section class="container mx-auto px-4 mt-16">
     <div class="flex justify-between items-center mb-6">
@@ -87,133 +88,89 @@
         </a>
     </div>
 
-    <!-- Movie Grid (Mengganti horizontal scroll dengan grid) -->
+    @if($nowShowing->count() > 0)
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        <!-- Movie Card 1 -->
-        <div class="group cursor-pointer">
-            <div class="relative overflow-hidden rounded-xl mb-3">
-                <img src="/martian.jpg" alt="The Martian" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black transform translate-y-full group-hover:translate-y-0 transition">
-                    <a href="{{ route('films.show', 'the-martian') }}" class="block w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700 text-center">
-                        Beli Tiket
+        @foreach($nowShowing as $film)
+        @php
+            $slug = \Illuminate\Support\Str::slug($film->judul);
+        @endphp
+
+        <div class="group cursor-pointer" onclick="window.location='{{ route('films.show', $slug) }}'">
+            <div class="relative overflow-hidden rounded-xl mb-3 shadow-sm aspect-[2/3]">
+                
+                @if($film->poster)
+                    <img 
+                        src="{{ $film->poster }}" 
+                        alt="{{ $film->judul }}" 
+                        class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                        onerror="this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center\'><i class=\'fas fa-film text-5xl text-gray-500\'></i></div>'"
+                    >
+                @else
+                    <div class="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+                        <i class="fas fa-film text-5xl text-gray-500"></i>
+                    </div>
+                @endif
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+
+                <div class="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition duration-300">
+                    <a href="{{ route('films.show', $slug) }}"
+                       class="block w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 rounded-lg text-center"
+                       onclick="event.stopPropagation()">
+                        <i class="fas fa-ticket-alt mr-1"></i> Beli Tiket
                     </a>
                 </div>
+
+                @if($film->age_rating)
                 <div class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                    PG-13
+                    {{ $film->age_rating }}
                 </div>
-            </div>
-            <div>
-                <h3 class="text-gray-900 font-semibold group-hover:text-red-600 transition">The Martian</h3>
-                <div class="flex items-center gap-2 mt-1">
-                    <div class="flex text-yellow-400 text-xs">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <span class="text-gray-600 text-xs">(4.5)</span>
-                </div>
-                <p class="text-gray-600 text-xs mt-1">Sci-Fi • 144 menit</p>
-            </div>
-        </div>
+                @endif
 
-        <!-- Movie Card 2 -->
-        <div class="group cursor-pointer">
-            <div class="relative overflow-hidden rounded-xl mb-3">
-                <img src="/ylbh.jpg" alt="Project: Kapali Guru" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black transform translate-y-full group-hover:translate-y-0 transition">
-                    <a href="{{ route('films.show', 'project-kapali-guru') }}" class="block w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700 text-center">
-                        Beli Tiket
-                    </a>
+                @if($film->rating > 0)
+                <div class="absolute bottom-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
+                    <i class="fas fa-star text-yellow-400 text-xs"></i>
+                    <span class="text-white text-xs font-bold">{{ $film->rating }}</span>
                 </div>
+                @endif
             </div>
-            <div>
-                <h3 class="text-gray-900 font-semibold group-hover:text-red-600 transition">Project: Kapali Guru</h3>
-                <div class="flex items-center gap-2 mt-1">
-                    <div class="flex text-yellow-400 text-xs">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </div>
-                    <span class="text-gray-600 text-xs">(3.0)</span>
-                </div>
-                <p class="text-gray-600 text-xs mt-1">Drama • 120 menit</p>
-            </div>
-        </div>
 
-        <!-- Movie Card 3 -->
-        <div class="group cursor-pointer">
-            <div class="relative overflow-hidden rounded-xl mb-3">
-                <img src="/spider.jpg" alt="Spider-Verse" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black transform translate-y-full group-hover:translate-y-0 transition">
-                    <a href="{{ route('films.show', 'the-spider-verse') }}" class="block w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700 text-center">
-                        Beli Tiket
-                    </a>
-                </div>
-            </div>
             <div>
-                <h3 class="text-gray-900 font-semibold group-hover:text-red-600 transition">The Spider-Verse</h3>
-                <div class="flex items-center gap-2 mt-1">
-                    <div class="flex text-yellow-400 text-xs">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <span class="text-gray-600 text-xs">(5.0)</span>
-                </div>
-                <p class="text-gray-600 text-xs mt-1">Animation • 140 menit</p>
-            </div>
-        </div>
-        <!-- Movie Card 4 -->
-        <div class="group cursor-pointer">
-            <div class="relative overflow-hidden rounded-xl mb-3">
-                <img src="/ayah.jpg" alt="Ayah Ini Arahnya Kemana" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black transform translate-y-full group-hover:translate-y-0 transition">
-                    <a href="{{ route('films.show', 'ayah-ini-arahnya-kemana') }}" class="block w-full bg-red-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-red-700 text-center">
-                        Beli Tiket
-                    </a>
-                </div>
-                <div class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                    PG-13
-                </div>
-            </div>
-            <div>
-                <h3 class="text-gray-900 font-semibold group-hover:text-red-600 transition">Ayah Ini Arahnya Kemana</h3>
-                <div class="flex items-center gap-2 mt-1">
-                    <div class="flex text-yellow-400 text-xs">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <span class="text-gray-600 text-xs">(5)</span>
-                </div>
-                <p class="text-gray-600 text-xs mt-1">Sci-Fi •  172 menit</p>
-            </div>
-        </div>
+                <h3 class="text-gray-900 font-semibold group-hover:text-red-600 transition line-clamp-1">
+                    {{ $film->judul }}
+                </h3>
 
-        <!-- Tambahkan movie cards lainnya dengan struktur yang sama -->
-        <!-- Movie Card 4 -->
-        <div class="group cursor-pointer">
-            <div class="relative overflow-hidden rounded-xl mb-3">
-                <div class="w-full h-64 bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center">
-                    <i class="fas fa-film text-6xl text-gray-300"></i>
+                <div class="flex items-center gap-2 mt-1">
+                    <div class="flex text-yellow-400 text-xs">
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= floor($film->rating))
+                                <i class="fas fa-star"></i>
+                            @elseif($i - 0.5 <= $film->rating)
+                                <i class="fas fa-star-half-alt"></i>
+                            @else
+                                <i class="far fa-star"></i>
+                            @endif
+                        @endfor
+                    </div>
+
+                    <span class="text-gray-600 text-xs">
+                        ({{ number_format($film->rating, 1) }})
+                    </span>
                 </div>
-            </div>
-            <div>
-                <h3 class="text-gray-900 font-semibold">Coming Soon</h3>
-                <p class="text-gray-600 text-xs mt-1">Segera tayang</p>
+
+                <p class="text-gray-600 text-xs mt-1">
+                    {{ $film->genre }} • {{ $film->durasi }} menit
+                </p>
             </div>
         </div>
+        @endforeach
     </div>
+    @else
+    <div class="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200">
+        <i class="fas fa-film text-5xl text-gray-200 mb-3 block"></i>
+        <p class="text-gray-400 font-medium">Tidak ada film yang sedang tayang</p>
+    </div>
+    @endif
 </section>
 
 
@@ -226,28 +183,50 @@
         </div>
     </div>
     
+    @if($comingSoon->count() > 0)
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-md">
-            <div class="relative h-48 bg-gradient-to-br from-gray-200 to-gray-300">
-                <i class="fas fa-clock text-4xl text-gray-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
-                <div class="absolute bottom-2 right-2 bg-black/70 px-2 py-1 rounded text-xs text-white">Coming 2026</div>
+        @foreach($comingSoon as $film)
+        @php
+            $slug = \Illuminate\Support\Str::slug($film->judul);
+        @endphp
+
+        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-md group cursor-pointer"
+             onclick="window.location='{{ route('films.show', $slug) }}'">
+
+            <div class="relative h-48 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+                @if($film->poster)
+                    <img 
+                        src="{{ $film->poster }}" 
+                        alt="{{ $film->judul }}" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500 filter brightness-75"
+                    >
+                @else
+                    <i class="fas fa-clock text-4xl text-gray-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
+                @endif
+
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="bg-orange-500 text-white text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-wider">
+                        Coming Soon
+                    </div>
+                </div>
+
             </div>
+
             <div class="p-3">
-                <h3 class="text-gray-900 font-semibold text-sm">Kupeluk Kamu Selamanya</h3>
-                <p class="text-gray-600 text-xs">30 April 2026</p>
+                <h3 class="text-gray-900 font-semibold text-sm line-clamp-1">
+                    {{ $film->judul }}
+                </h3>
+                <p class="text-gray-600 text-xs">{{ $film->genre }}</p>
             </div>
         </div>
-        
-        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-md">
-            <div class="relative h-48 bg-gradient-to-br from-gray-200 to-gray-300">
-                <i class="fas fa-clock text-4xl text-gray-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
-            </div>
-            <div class="p-3">
-                <h3 class="text-gray-900 font-semibold text-sm">The Devil Wears Prada 2</h3>
-                <p class="text-gray-600 text-xs">Coming Soon</p>
-            </div>
-        </div>
+        @endforeach
     </div>
+    @else
+    <div class="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200">
+        <i class="fas fa-clock text-5xl text-gray-200 mb-3 block"></i>
+        <p class="text-gray-400 font-medium">Belum ada film coming soon</p>
+    </div>
+    @endif
 </section>
 
 <!-- NEWSLETTER SECTION -->
