@@ -16,12 +16,13 @@
             
             <!-- Search Bar yang Lebih Menarik -->
             <div class="relative max-w-2xl mx-auto">
-                <div class="relative group">
+                <div class="relative group transition-all duration-300 ease-out hover:-translate-y-0.5">
                     <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-red-600 transition"></i>
                     <input type="text" 
                         id="searchInput"
                         placeholder="Cari film, bioskop, atau promo..." 
-                        class="w-full bg-white border-2 border-gray-300 rounded-full py-3 pl-12 pr-4 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-red-600 focus:bg-white transition backdrop-blur-sm shadow-lg">
+                        class="w-full bg-white border-2 border-gray-300 rounded-full py-3 pl-12 pr-4 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-red-600 focus:bg-white transition backdrop-blur-sm shadow-lg group-hover:bg-red-50 group-hover:border-red-400 group-hover:shadow-2xl group-hover:shadow-red-500/20 group-hover:ring-4 group-hover:ring-red-100 transition-all duration-300 ease-out"
+                        >
                 </div>
                 
                 <!-- Search Results Dropdown -->
