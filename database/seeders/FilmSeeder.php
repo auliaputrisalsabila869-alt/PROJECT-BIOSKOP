@@ -218,6 +218,22 @@ class FilmSeeder extends Seeder
                 'release_date' => '2026-10-15',
                 'status'       => 'coming_soon',
             ],
+            [
+                'judul'        => 'The Batman 2',
+                'sinopsis'     => 'Batman menghadapi musuh baru yang lebih gelap dan berbahaya di Gotham City.',
+                'durasi'       => 150,
+                'genre'        => 'Action, Crime',
+                'poster'       => '/batman2.jpg',
+                'backdrop'     => '/bd_batman2.jpg',
+                'rating'       => 0,
+                'rating_count' => 0,
+                'age_rating'   => 'PG-13',
+                'trailer'      => null,
+                'director'     => 'Matt Reeves',
+                'cast'         => json_encode(['Robert Pattinson', 'Zoë Kravitz', 'Colin Farrell']),
+                'release_date' => '2026-06-19',
+                'status'       => 'coming_soon',
+            ],
         ];
 
         foreach ($films as $film) {
