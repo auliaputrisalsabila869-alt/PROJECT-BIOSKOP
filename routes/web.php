@@ -24,6 +24,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // === FILM ROUTES ===
 Route::get('/films', [FilmController::class, 'index'])->name('films.index');
 Route::get('/films/{slug}', [FilmController::class, 'show'])->name('films.show');
+Route::get('/search/suggestions', [FilmController::class, 'searchSuggestions'])
+    ->name('search.suggestions');
 
 // === BOOKING ROUTES (harus login) ===
 Route::middleware(['auth'])->group(function () {
