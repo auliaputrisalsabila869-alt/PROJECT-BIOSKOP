@@ -174,7 +174,7 @@ class FilmSeeder extends Seeder
                 'durasi'       => 105,
                 'genre'        => 'Animation, Family',
                 'poster'       => 'https://m.media-amazon.com/images/M/MV5BYWY3MDE2Y2UtOTE3Zi00MGUzLTg2MTItZjE1ZWVkMGVlODRmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-                'backdrop'     => 'https://statik.tempo.co/data/2024/06/14/id_1310040/1310040_720.jpg',
+                'backdrop'     => 'https://images.squarespace-cdn.com/content/v1/60241cb68df65b530cd84d95/1733769830669-KCJQZ4Y9W886JA24NM8R/i170_42.sel1616.155.jpg?format=2500w',
                 'rating'       => 4.8,
                 'rating_count' => 9800,
                 'age_rating'   => 'PG',
