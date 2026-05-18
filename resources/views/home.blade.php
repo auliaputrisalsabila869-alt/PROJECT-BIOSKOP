@@ -3,7 +3,7 @@
 @section('content')
 
 {{-- HERO SECTION --}}
-<section class="relative pt-20 min-h-screen flex items-center overflow-hidden bg-white">
+<section class="relative pt-20 min-h-screen flex items-center overflow-visible bg-white z-20">
 
     {{-- Animated Background --}}
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
@@ -55,32 +55,66 @@
             Melampaui pengalaman menonton film biasa. Nikmati film terbaik dengan kualitas premium.
         </p>
 
-        {{-- Search Bar --}}
-        <div class="relative max-w-2xl mx-auto mb-12"
-             style="animation: fadeInUp 0.7s ease-out 0.3s both;">
-            <form action="{{ route('films.index') }}" method="GET">
-                <div class="relative group">
-                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-500 transition-colors text-lg"></i>
-                    <input type="text" name="search"
-                           placeholder="Cari film, genre, sutradara..."
-                           class="w-full bg-white border-2 border-gray-200 focus:border-red-500 rounded-2xl py-4 pl-14 pr-6 text-gray-900 placeholder-gray-400 focus:outline-none transition-all text-base shadow-lg focus:shadow-red-100">
-                    <button type="submit"
-                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-xl font-semibold transition text-sm">
-                        Cari
-                    </button>
-                </div>
-            </form>
+        {{-- Search Bar Upgrade --}}
+<div class="relative max-w-3xl mx-auto mb-12 z-40"
+     id="searchWrapper"
+     style="animation: fadeInUp 0.7s ease-out 0.3s both;">
 
-            {{-- Quick links --}}
-            <div class="flex flex-wrap justify-center gap-2 mt-3">
-                @foreach(['Drama', 'Horror', 'Action', 'Comedy', 'Animation'] as $genre)
-                <a href="{{ route('films.index', ['search' => $genre]) }}"
-                   class="text-xs text-gray-400 hover:text-red-600 bg-gray-50 hover:bg-red-50 border border-gray-200 hover:border-red-200 px-3 py-1 rounded-full transition">
-                    {{ $genre }}
-                </a>
-                @endforeach
+    <div class="relative group/search">
+        <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-gray-800 text-xl z-10 transition-all duration-300 group-hover/search:text-gray-900 group-focus-within/search:text-gray-900"></i>
+
+        <input
+            type="text"
+            id="searchInput"
+            autocomplete="off"
+            placeholder="Search movies or cinemas"
+            class="w-full h-16 bg-gray-200/75 hover:bg-white focus:bg-white border border-gray-200/60 hover:border-gray-200 focus:border-gray-200 rounded-full pl-16 pr-6 text-gray-900 placeholder-gray-600 hover:placeholder-gray-700 focus:placeholder-gray-700 focus:outline-none focus:ring-0 transition-all duration-300 text-lg shadow-[0_8px_22px_rgba(0,0,0,0.18)] hover:shadow-[0_10px_28px_rgba(0,0,0,0.20)] focus:shadow-[0_10px_28px_rgba(0,0,0,0.20)]"
+        >
+    </div>
+
+    {{-- Search Panel --}}
+    <div
+        id="searchPanel"
+        class="hidden absolute left-0 right-0 top-[78px] bg-[#f3f3f3] border border-gray-200 rounded-3xl shadow-2xl overflow-hidden text-left z-50"
+    >
+        <div class="flex items-center gap-4 px-6 md:px-8 py-6 border-b border-gray-300">
+            <button type="button" data-filter="all" class="search-tab bg-black text-white px-6 py-3 rounded-full font-semibold text-sm">
+                Semua
+            </button>
+
+            <button type="button" data-filter="film" class="search-tab bg-white text-gray-900 px-6 py-3 rounded-full font-semibold text-sm">
+                Film
+            </button>
+
+            <button type="button" data-filter="bioskop" class="search-tab bg-white text-gray-900 px-6 py-3 rounded-full font-semibold text-sm">
+                Bioskop
+            </button>
+        </div>
+
+        <div class="px-6 md:px-8 py-7 min-h-[260px] max-h-[520px] overflow-y-auto">
+            <div id="searchLoading" class="hidden text-gray-500 text-sm mb-4">
+                Mencari data...
+            </div>
+
+            <div id="filmResultSection">
+                <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-5">Film</h3>
+                <div id="filmResults" class="space-y-5"></div>
+            </div>
+
+            <div id="bioskopResultSection" class="mt-8">
+                <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-5">Bioskop</h3>
+                <div id="bioskopResults" class="space-y-4"></div>
+            </div>
+
+            <div id="emptySearchResult" class="hidden text-center py-12 text-gray-500">
+                <i class="fas fa-search text-4xl mb-3 block text-gray-300"></i>
+                Data tidak ditemukan.
             </div>
         </div>
+    </div>
+</div>
+
+<div id="searchBackdrop" class="hidden fixed inset-0 bg-white/70 backdrop-blur-[2px] z-30"></div>
 
         {{-- CTA Buttons --}}
         <div class="flex flex-wrap justify-center gap-4 mb-16"
@@ -385,4 +419,197 @@
 }
 .aspect-\[2\/3\] { aspect-ratio: 2/3; }
 </style>
+
+<script>
+const searchInput = document.getElementById('searchInput');
+const searchPanel = document.getElementById('searchPanel');
+const searchBackdrop = document.getElementById('searchBackdrop');
+const searchLoading = document.getElementById('searchLoading');
+
+const filmResults = document.getElementById('filmResults');
+const bioskopResults = document.getElementById('bioskopResults');
+
+const filmResultSection = document.getElementById('filmResultSection');
+const bioskopResultSection = document.getElementById('bioskopResultSection');
+const emptySearchResult = document.getElementById('emptySearchResult');
+
+const tabs = document.querySelectorAll('.search-tab');
+
+let activeFilter = 'all';
+let searchTimer = null;
+let latestData = {
+    films: [],
+    bioskop: [],
+};
+
+function escapeHtml(value) {
+    if (value === null || value === undefined) return '';
+
+    return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
+function openSearchPanel() {
+    searchPanel.classList.remove('hidden');
+    searchBackdrop.classList.remove('hidden');
+}
+
+function closeSearchPanel() {
+    searchPanel.classList.add('hidden');
+    searchBackdrop.classList.add('hidden');
+}
+
+function setActiveTab(filter) {
+    activeFilter = filter;
+
+    tabs.forEach(tab => {
+        const isActive = tab.dataset.filter === filter;
+
+        tab.classList.toggle('bg-black', isActive);
+        tab.classList.toggle('text-white', isActive);
+        tab.classList.toggle('bg-white', !isActive);
+        tab.classList.toggle('text-gray-900', !isActive);
+    });
+
+    renderSearchResults();
+}
+
+function renderSearchResults() {
+    filmResults.innerHTML = '';
+    bioskopResults.innerHTML = '';
+
+    const films = latestData.films || [];
+    const bioskop = latestData.bioskop || [];
+
+    const showFilm = activeFilter === 'all' || activeFilter === 'film';
+    const showBioskop = activeFilter === 'all' || activeFilter === 'bioskop';
+
+    filmResultSection.classList.toggle('hidden', !showFilm);
+    bioskopResultSection.classList.toggle('hidden', !showBioskop);
+
+    if (showFilm) {
+        films.forEach(film => {
+            const poster = film.poster
+                ? `<img src="${escapeHtml(film.poster)}" alt="${escapeHtml(film.title)}" class="w-full h-full object-cover">`
+                : `<div class="w-full h-full flex items-center justify-center text-gray-500"><i class="fas fa-film text-3xl"></i></div>`;
+
+            filmResults.innerHTML += `
+                <a href="${escapeHtml(film.url)}" class="flex items-center gap-5 group">
+                    <div class="w-20 h-28 md:w-24 md:h-32 rounded-xl overflow-hidden bg-gray-300 shrink-0">
+                        ${poster}
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg md:text-xl font-bold text-gray-900 group-hover:text-red-600 transition">
+                            ${escapeHtml(film.title)}
+                        </h4>
+
+                        <div class="flex items-center gap-2 mt-3">
+                            <span class="bg-gray-200 text-gray-700 text-xs md:text-sm px-3 py-1 rounded-md">
+                                ${escapeHtml(film.format)}
+                            </span>
+
+                            <span class="bg-gray-200 text-gray-700 text-xs md:text-sm px-3 py-1 rounded-md">
+                                ${escapeHtml(film.age_rating)}
+                            </span>
+                        </div>
+
+                        <p class="text-gray-500 text-sm mt-2">
+                            ${escapeHtml(film.genre)}
+                        </p>
+                    </div>
+                </a>
+            `;
+        });
+    }
+
+    if (showBioskop) {
+        bioskop.forEach(item => {
+            bioskopResults.innerHTML += `
+                <a href="${escapeHtml(item.url)}" class="flex items-center gap-4 p-4 rounded-2xl hover:bg-white transition">
+                    <div class="w-14 h-14 rounded-2xl bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                        <i class="fas fa-building text-xl"></i>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900">
+                            ${escapeHtml(item.name)}
+                        </h4>
+
+                        <p class="text-gray-500 text-sm">
+                            Kapasitas ${escapeHtml(item.capacity)} kursi
+                        </p>
+                    </div>
+                </a>
+            `;
+        });
+    }
+
+    const totalVisible =
+        (showFilm ? films.length : 0) +
+        (showBioskop ? bioskop.length : 0);
+
+    emptySearchResult.classList.toggle('hidden', totalVisible > 0);
+}
+
+function fetchSearchResults(keyword) {
+    searchLoading.classList.remove('hidden');
+
+    fetch(`{{ route('search.suggestions') }}?q=${encodeURIComponent(keyword)}`)
+        .then(response => response.json())
+        .then(data => {
+            latestData = data;
+            renderSearchResults();
+        })
+        .catch(() => {
+            latestData = { films: [], bioskop: [] };
+            renderSearchResults();
+        })
+        .finally(() => {
+            searchLoading.classList.add('hidden');
+        });
+}
+
+searchInput.addEventListener('focus', () => {
+    if (searchInput.value.trim().length >= 2) {
+        openSearchPanel();
+    }
+});
+
+searchInput.addEventListener('input', function () {
+    const keyword = this.value.trim();
+
+    clearTimeout(searchTimer);
+
+    if (keyword.length < 2) {
+        closeSearchPanel();
+        latestData = { films: [], bioskop: [] };
+        return;
+    }
+
+    openSearchPanel();
+
+    searchTimer = setTimeout(() => {
+        fetchSearchResults(keyword);
+    }, 300);
+});
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        setActiveTab(tab.dataset.filter);
+    });
+});
+
+searchBackdrop.addEventListener('click', closeSearchPanel);
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeSearchPanel();
+    }
+});
+</script>
 @endsection

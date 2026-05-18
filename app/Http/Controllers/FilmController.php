@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Film;
+use App\Models\Studio;
 use Illuminate\Support\Str;
 
 class FilmController extends Controller
@@ -65,6 +66,55 @@ class FilmController extends Controller
 
         return view('films.index', compact('nowShowing', 'comingSoon', 'genres', 'sort', 'search'));
     }
+    
+    public function searchSuggestions(Request $request)
+{
+    $keyword = trim($request->get('q', ''));
+
+    if (strlen($keyword) < 2) {
+        return response()->json([
+            'films' => [],
+            'bioskop' => [],
+        ]);
+    }
+
+    $films = Film::query()
+        ->where(function ($query) use ($keyword) {
+            $query->where('judul', 'like', "%{$keyword}%")
+                ->orWhere('genre', 'like', "%{$keyword}%")
+                ->orWhere('director', 'like', "%{$keyword}%");
+        })
+        ->limit(6)
+        ->get()
+        ->map(function ($film) {
+            return [
+                'title' => $film->judul,
+                'poster' => $film->poster,
+                'genre' => $film->genre,
+                'age_rating' => $film->age_rating ?? 'R13+',
+                'format' => '2D',
+                'rating' => $film->rating ?? 0,
+                'url' => route('films.show', Str::slug($film->judul)),
+            ];
+        });
+
+    $bioskop = Studio::query()
+        ->where('nama', 'like', "%{$keyword}%")
+        ->limit(5)
+        ->get()
+        ->map(function ($studio) {
+            return [
+                'name' => $studio->nama,
+                'capacity' => $studio->kapasitas,
+                'url' => route('films.index'),
+            ];
+        });
+
+    return response()->json([
+        'films' => $films,
+        'bioskop' => $bioskop,
+    ]);
+}
 
     public function show($slug)
     {

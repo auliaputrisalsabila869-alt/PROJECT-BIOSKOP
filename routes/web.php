@@ -23,6 +23,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // === FILM ROUTES ===
 Route::get('/films', [FilmController::class, 'index'])->name('films.index');
+
+Route::get('/search/suggestions', [FilmController::class, 'searchSuggestions'])
+    ->name('search.suggestions');
+
 Route::get('/films/{slug}', [FilmController::class, 'show'])->name('films.show');
 
 // === BOOKING ROUTES (harus login) ===

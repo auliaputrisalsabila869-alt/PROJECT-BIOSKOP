@@ -2,10 +2,24 @@
 @section('title', $film->judul . ' - CTIX.ID')
 @section('content')
 
+@php
+    $posterPath = $film->poster;
+    $backdropPath = $film->backdrop;
+
+    $posterIsUrl = $posterPath && \Illuminate\Support\Str::startsWith($posterPath, ['http://', 'https://']);
+    $backdropIsUrl = $backdropPath && \Illuminate\Support\Str::startsWith($backdropPath, ['http://', 'https://']);
+
+    $posterExists = $posterPath && ($posterIsUrl || file_exists(public_path(ltrim($posterPath, '/'))));
+    $backdropExists = $backdropPath && ($backdropIsUrl || file_exists(public_path(ltrim($backdropPath, '/'))));
+
+    $posterUrl = $posterExists ? $posterPath : null;
+    $backdropUrl = $backdropExists ? $backdropPath : '/bd_martian.jpg';
+@endphp
+
 {{-- HERO dengan Backdrop --}}
 <section class="relative pt-16 min-h-[65vh] flex items-end">
     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-         style="background-image: url('{{ $film->backdrop ?? '' }}');">
+        style="background-image: url('{{ $backdropUrl }}');">
         <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-gray-900/30"></div>
     </div>
 
@@ -14,12 +28,17 @@
 
             {{-- Poster --}}
             <div class="w-44 md:w-56 flex-shrink-0 rounded-xl overflow-hidden shadow-2xl">
-                @if($film->poster)
-                <img src="{{ $film->poster }}" alt="{{ $film->judul }}" class="w-full">
+                @if($posterUrl)
+                    <img 
+                        src="{{ $posterUrl }}" 
+                        alt="{{ $film->judul }}" 
+                        class="w-full h-72 object-cover"
+                        onerror="this.outerHTML='<div class=\'w-full h-72 bg-gray-700 flex items-center justify-center\'><i class=\'fas fa-film text-6xl text-gray-500\'></i></div>'"
+                    >
                 @else
-                <div class="w-full h-72 bg-gray-700 flex items-center justify-center">
-                    <i class="fas fa-film text-6xl text-gray-500"></i>
-                </div>
+                    <div class="w-full h-72 bg-gray-700 flex items-center justify-center">
+                        <i class="fas fa-film text-6xl text-gray-500"></i>
+                    </div>
                 @endif
             </div>
 
