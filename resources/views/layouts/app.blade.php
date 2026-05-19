@@ -10,39 +10,71 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
-        * { font-family: 'Poppins', sans-serif; }
 
-        .glass {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-        }
+<style>
+    * { 
+        font-family: 'Poppins', sans-serif; 
+    }
 
-        .glow-btn {
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
-            transition: all 0.3s ease;
-        }
+    .glass {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    }
 
-        .glow-btn:hover {
-            box-shadow: 0 0 40px rgba(239, 68, 68, 0.8);
-            transform: translateY(-3px);
-        }
+    .glow-btn {
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        transition: all 0.3s ease;
+    }
 
-        .text-gradient {
-            background: linear-gradient(135deg, #ef4444, #f97316, #eab308);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+    .glow-btn:hover {
+        box-shadow: 0 0 40px rgba(239, 68, 68, 0.8);
+        transform: translateY(-3px);
+    }
 
-        html { scroll-behavior: smooth; }
+    .text-gradient {
+        background: linear-gradient(135deg, #ef4444, #f97316, #eab308);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 
-        /* Dropdown user menu */
-        .user-dropdown { display: none; }
-        .user-dropdown.open { display: block; }
-    </style>
+    html { 
+        scroll-behavior: smooth; 
+    }
+
+    .user-dropdown { 
+        display: none; 
+    }
+
+    .user-dropdown.open { 
+        display: block; 
+    }
+
+    .city-option {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 13px 28px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #3f3f46;
+        letter-spacing: 0.03em;
+        transition: all 0.2s ease;
+    }
+
+    .city-option:hover {
+        background: rgba(255, 255, 255, 0.65);
+        color: #111827;
+    }
+
+    .city-option.active {
+        background: rgba(255, 255, 255, 0.65);
+        color: #111827;
+        font-weight: 700;
+    }
+</style>
 
     @stack('styles')
 </head>
@@ -51,21 +83,82 @@
 
     <!-- Navbar -->
     <nav class="fixed w-full z-50 glass border-b border-gray-200 px-6 py-3">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="max-w-7xl mx-auto relative flex items-center">
 
-            {{-- Logo --}}
-            <a href="{{ route('home') }}" class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-film text-white text-lg"></i>
+            {{-- Logo + Location --}}
+            <div class="flex items-center gap-5 z-20">
+
+                {{-- Logo lama --}}
+                <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
+                    <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-film text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-black leading-none">CTIX<span class="text-red-500">ID</span></h1>
+                        <p class="text-xs text-gray-400">Premium Movie Experience</p>
+                    </div>
+                </a>
+
+                {{-- Location Button --}}
+                <div class="relative shrink-0" id="locationWrapper">
+                    <button 
+                        type="button"
+                        onclick="toggleLocationPanel()"
+                        class="hidden md:flex items-center gap-3 bg-gray-200/80 hover:bg-gray-200 rounded-full px-5 py-2.5 transition-all duration-200"
+                    >
+                        <i class="fas fa-map-marker-alt text-gray-700 text-base"></i>
+                        <span id="selectedLocationText" class="text-sm font-bold tracking-wider text-gray-800 uppercase">
+                            LAMPUNG
+                        </span>
+                    </button>
+
+                        <div 
+                            id="locationPanel"
+                            class="hidden absolute left-0 top-full mt-3 w-[460px] max-w-[92vw] bg-[#eeeeee] border border-gray-300 rounded-[24px] shadow-2xl overflow-hidden z-[999]"
+                        >
+                        <div class="px-7 pt-7 pb-5">
+                            <h3 class="text-[22px] font-bold text-gray-800 mb-5">
+                                Pilih lokasi kamu
+                            </h3>
+
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-800 text-lg"></i>
+                                <input 
+                                    type="text"
+                                    id="locationSearchInput"
+                                    placeholder="Cari kota"
+                                    autocomplete="off"
+                                    class="w-full h-12 bg-white/70 border border-transparent rounded-full pl-12 pr-5 text-base text-gray-800 placeholder-gray-600 focus:outline-none focus:ring-0 focus:border-transparent"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-300"></div>
+
+                        <div id="locationList" class="max-h-[330px] overflow-y-auto py-2">  
+                            <button type="button" data-city="AMBON" class="city-option">AMBON</button>
+                            <button type="button" data-city="BALIKPAPAN" class="city-option">BALIKPAPAN</button>
+                            <button type="button" data-city="BANDUNG" class="city-option">BANDUNG</button>
+                            <button type="button" data-city="BANJARMASIN" class="city-option">BANJARMASIN</button>
+                            <button type="button" data-city="BATAM" class="city-option">BATAM</button>
+                            <button type="button" data-city="BEKASI" class="city-option">BEKASI</button>
+                            <button type="button" data-city="BOGOR" class="city-option">BOGOR</button>
+                            <button type="button" data-city="DENPASAR" class="city-option">DENPASAR</button>
+                            <button type="button" data-city="JAKARTA" class="city-option">JAKARTA</button>
+                            <button type="button" data-city="LAMPUNG" class="city-option">LAMPUNG</button>
+                            <button type="button" data-city="MAKASSAR" class="city-option">MAKASSAR</button>
+                            <button type="button" data-city="MEDAN" class="city-option">MEDAN</button>
+                            <button type="button" data-city="PALEMBANG" class="city-option">PALEMBANG</button>
+                            <button type="button" data-city="SEMARANG" class="city-option">SEMARANG</button>
+                            <button type="button" data-city="SURABAYA" class="city-option">SURABAYA</button>
+                            <button type="button" data-city="YOGYAKARTA" class="city-option">YOGYAKARTA</button>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-xl font-black leading-none">CTIX<span class="text-red-500">ID</span></h1>
-                    <p class="text-xs text-gray-400">Premium Movie Experience</p>
-                </div>
-            </a>
+            </div>
 
             {{-- Nav Links --}}
-            <div class="hidden md:flex items-center gap-8">
+            <div class="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                 <a href="{{ route('home') }}"
                    class="text-sm font-medium {{ request()->routeIs('home') ? 'text-red-600 font-semibold' : 'text-gray-600 hover:text-red-500' }} transition">
                     Home
@@ -87,7 +180,7 @@
             </div>
 
             {{-- Auth Area --}}
-            <div class="flex items-center gap-3">
+            <div class="ml-auto flex items-center gap-3 z-20">
                 @auth
                     {{-- User Dropdown --}}
                     <div class="relative" id="userMenuWrapper">
@@ -244,18 +337,108 @@
 </footer>
 
     <script>
-        // Toggle user dropdown
         function toggleUserMenu() {
             const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('open');
+            if (dropdown) {
+                dropdown.classList.toggle('open');
+            }
         }
 
-        // Tutup dropdown kalau klik di luar
+        function toggleLocationPanel() {
+            const panel = document.getElementById('locationPanel');
+            if (panel) {
+                panel.classList.toggle('hidden');
+            }
+        }
+
+        function closeLocationPanel() {
+            const panel = document.getElementById('locationPanel');
+            if (panel) {
+                panel.classList.add('hidden');
+            }
+        }
+
+        function setSelectedLocation(city) {
+            const selectedLocationText = document.getElementById('selectedLocationText');
+            const cityOptions = document.querySelectorAll('.city-option');
+
+            if (selectedLocationText) {
+                selectedLocationText.textContent = city;
+            }
+
+            localStorage.setItem('ctix_selected_city', city);
+
+            cityOptions.forEach(option => {
+                option.classList.toggle('active', option.dataset.city === city);
+            });
+
+            closeLocationPanel();
+
+            window.dispatchEvent(new CustomEvent('ctixLocationChanged', {
+                detail: { city: city }
+            }));
+        }
+
+        function filterLocationList(keyword) {
+            const cityOptions = document.querySelectorAll('.city-option');
+            const normalizedKeyword = keyword.toLowerCase();
+
+            cityOptions.forEach(option => {
+                const cityName = option.dataset.city.toLowerCase();
+                option.style.display = cityName.includes(normalizedKeyword) ? 'block' : 'none';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectedLocationText = document.getElementById('selectedLocationText');
+            const locationSearchInput = document.getElementById('locationSearchInput');
+            const cityOptions = document.querySelectorAll('.city-option');
+
+            const savedCity = localStorage.getItem('ctix_selected_city') || 'LAMPUNG';
+
+            if (selectedLocationText) {
+                selectedLocationText.textContent = savedCity;
+            }
+
+            cityOptions.forEach(option => {
+                option.classList.toggle('active', option.dataset.city === savedCity);
+
+                option.addEventListener('click', function () {
+                    setSelectedLocation(this.dataset.city);
+                });
+            });
+
+            if (locationSearchInput) {
+                locationSearchInput.addEventListener('input', function () {
+                    filterLocationList(this.value);
+                });
+            }
+        });
+
         document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('userMenuWrapper');
-            if (wrapper && !wrapper.contains(e.target)) {
+            const userWrapper = document.getElementById('userMenuWrapper');
+            const locationWrapper = document.getElementById('locationWrapper');
+
+            if (userWrapper && !userWrapper.contains(e.target)) {
                 const dropdown = document.getElementById('userDropdown');
-                if (dropdown) dropdown.classList.remove('open');
+                if (dropdown) {
+                    dropdown.classList.remove('open');
+                }
+            }
+
+            if (locationWrapper && !locationWrapper.contains(e.target)) {
+                closeLocationPanel();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLocationPanel();
+
+                const dropdown = document.getElementById('userDropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('open');
+                }
             }
         });
     </script>

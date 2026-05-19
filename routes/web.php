@@ -29,6 +29,9 @@ Route::get('/search/suggestions', [FilmController::class, 'searchSuggestions'])
 
 Route::get('/films/{slug}', [FilmController::class, 'show'])->name('films.show');
 
+// === BIOSKOP DETAIL ===
+Route::get('/bioskop/{slug}', [FilmController::class, 'bioskopDetail'])->name('bioskop.detail');
+
 // === BOOKING ROUTES (harus login) ===
 Route::middleware(['auth'])->group(function () {
     Route::get('/booking/film/{filmId}/studio', [BookingController::class, 'selectStudio'])->name('booking.select-studio');
@@ -40,6 +43,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/booking/{bookingId}/success', [BookingController::class, 'success'])->name('booking.success');
     Route::get('/my-bookings', [BookingController::class, 'history'])->name('booking.history');
     Route::get('/my-tickets', [BookingController::class, 'myTickets'])->name('booking.my-tickets');
+    Route::get('/bioskop/{slug}', [FilmController::class, 'bioskopDetail'])
+    ->name('bioskop.detail');
+    Route::get('/bioskop/schedule/{scheduleId}/seats', [FilmController::class, 'bioskopSelectSeats'])
+    ->name('bioskop.select-seats');
+    Route::get('/bioskop/schedule/{scheduleId}/payment', [FilmController::class, 'bioskopPayment'])
+    ->name('bioskop.payment');
 });
 
 /// === ADMIN ROUTES (harus login + admin) ===

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Film;
 use App\Models\Studio;
+use App\Models\Schedule;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class FilmController extends Controller
 {   
+    
     public function home()
 {
     $nowShowing = Film::where('status', 'now_showing')
@@ -67,9 +69,20 @@ class FilmController extends Controller
         return view('films.index', compact('nowShowing', 'comingSoon', 'genres', 'sort', 'search'));
     }
     
+    public function bioskopSelectSeats($scheduleId)
+{
+    $schedule = Schedule::with(['film', 'studio'])->findOrFail($scheduleId);
+
+    $qty = (int) request('seat_count', 1);
+    $qty = max(1, min(8, $qty));
+
+    return view('bioskop.select-seats', compact('schedule', 'qty'));
+}
+
     public function searchSuggestions(Request $request)
 {
     $keyword = trim($request->get('q', ''));
+    $city = strtoupper(trim($request->get('city', 'LAMPUNG')));
 
     if (strlen($keyword) < 2) {
         return response()->json([
@@ -98,17 +111,38 @@ class FilmController extends Controller
             ];
         });
 
-    $bioskop = Studio::query()
-        ->where('nama', 'like', "%{$keyword}%")
-        ->limit(5)
-        ->get()
-        ->map(function ($studio) {
-            return [
-                'name' => $studio->nama,
-                'capacity' => $studio->kapasitas,
-                'url' => route('films.index'),
-            ];
-        });
+        $bioskop = Studio::query()
+            ->where('city', $city)
+            ->whereIn('nama', [
+                'CENTRAL LAMPUNG XXI',
+                'MALL BOEMI KEDATON XXI',
+                'CIPLAZ LAMPUNG XXI',
+            ])
+            ->where(function ($query) use ($keyword) {
+                $query->where('nama', 'like', "%{$keyword}%")
+                    ->orWhere('address', 'like', "%{$keyword}%")
+                    ->orWhere('city', 'like', "%{$keyword}%");
+            })
+            ->orderByRaw("
+                CASE
+                    WHEN nama = 'CENTRAL LAMPUNG XXI' THEN 1
+                    WHEN nama = 'MALL BOEMI KEDATON XXI' THEN 2
+                    WHEN nama = 'CIPLAZ LAMPUNG XXI' THEN 3
+                    ELSE 4
+                END
+            ")
+            ->get()
+            ->map(function ($studio) {
+                return [
+                    'name' => $studio->nama,
+                    'city' => $studio->city,
+                    'address' => $studio->address,
+                    'distance' => '0 km',
+                    'brand' => 'Cinema XXI',
+                    'capacity' => $studio->kapasitas,
+                    'url' => route('bioskop.detail', Str::slug($studio->nama)),
+                ];
+            });
 
     return response()->json([
         'films' => $films,
@@ -118,26 +152,60 @@ class FilmController extends Controller
 
     public function show($slug)
     {
-        // Cari dari database
-        $films = Film::all();
-        $film  = $films->first(fn($f) => Str::slug($f->judul) === $slug);
+        $film = Film::all()->first(function ($film) use ($slug) {
+            return Str::slug($film->judul) === $slug;
+        });
 
         if (!$film) {
             abort(404);
         }
 
-        // Cast dari JSON string ke array
-        if (is_string($film->cast)) {
-            $film->cast = json_decode($film->cast, true) ?? [];
-        }
-
         $recommendations = Film::where('id', '!=', $film->id)
-            ->where('status', 'now_showing')
-            ->where('genre', 'like', '%' . explode(',', $film->genre)[0] . '%')
-            ->take(4)
+            ->where('status', $film->status)
+            ->limit(4)
             ->get();
 
         return view('films.show', compact('film', 'recommendations'));
+    }
+
+    public function bioskopDetail($slug)
+    {
+        $allowedCinemaNames = [
+            'CENTRAL LAMPUNG XXI',
+            'MALL BOEMI KEDATON XXI',
+            'CIPLAZ LAMPUNG XXI',
+        ];
+
+        $studio = Studio::where('city', 'LAMPUNG')
+            ->whereIn('nama', $allowedCinemaNames)
+            ->get()
+            ->first(function ($studio) use ($slug) {
+                return Str::slug($studio->nama) === $slug;
+            });
+
+        if (!$studio) {
+            abort(404);
+        }
+
+        $tanggal = request('tanggal', now()->toDateString());
+
+            $schedules = Schedule::where('studio_id', $studio->id)
+                ->whereDate('tanggal', $tanggal)
+                ->with('film')
+                ->orderBy('waktu_mulai')
+                ->get();
+
+            $films = $schedules
+                ->groupBy('film_id')
+                ->map(function ($group) {
+                    return [
+                        'film' => $group->first()->film,
+                        'schedules' => $group,
+                    ];
+                })
+                ->values();
+
+        return view('bioskop.detail', compact('studio', 'films', 'tanggal'));
     }
 
     // =========================
@@ -220,4 +288,30 @@ class FilmController extends Controller
         return redirect()->route('admin.films.index')
             ->with('success', 'Film berhasil diupdate!');
     }
+    public function bioskopPayment($scheduleId)
+{
+    $schedule = Schedule::with(['film', 'studio'])->findOrFail($scheduleId);
+
+    $seats = request('seats', '');
+    $seatList = collect(explode(',', $seats))
+        ->map(fn ($seat) => trim($seat))
+        ->filter()
+        ->values();
+
+    if ($seatList->isEmpty()) {
+        return redirect()
+            ->route('bioskop.select-seats', $scheduleId)
+            ->with('error', 'Silakan pilih kursi terlebih dahulu.');
+    }
+
+    $ticketPrice = $schedule->harga ?? 40000;
+    $totalPrice = $ticketPrice * $seatList->count();
+
+    return view('bioskop.payment', compact(
+        'schedule',
+        'seatList',
+        'ticketPrice',
+        'totalPrice'
+    ));
+}
 }

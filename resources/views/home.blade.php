@@ -68,8 +68,12 @@
             id="searchInput"
             autocomplete="off"
             placeholder="Search movies or cinemas"
-            class="w-full h-16 bg-gray-200/75 hover:bg-white focus:bg-white border border-gray-200/60 hover:border-gray-200 focus:border-gray-200 rounded-full pl-16 pr-6 text-gray-900 placeholder-gray-600 hover:placeholder-gray-700 focus:placeholder-gray-700 focus:outline-none focus:ring-0 transition-all duration-300 text-lg shadow-[0_8px_22px_rgba(0,0,0,0.18)] hover:shadow-[0_10px_28px_rgba(0,0,0,0.20)] focus:shadow-[0_10px_28px_rgba(0,0,0,0.20)]"
+            class="w-full h-16 bg-gray-200/75 hover:bg-white focus:bg-white border border-gray-200/60 hover:border-gray-200 focus:border-gray-200 rounded-full pl-16 pr-20 text-gray-900 placeholder-gray-600 hover:placeholder-gray-700 focus:placeholder-gray-700 focus:outline-none focus:ring-0 transition-all duration-300 text-lg shadow-[0_8px_22px_rgba(0,0,0,0.18)] hover:shadow-[0_10px_28px_rgba(0,0,0,0.20)] focus:shadow-[0_10px_28px_rgba(0,0,0,0.20)]"
         >
+
+        <div id="searchThinkingIcon" class="hidden pointer-events-none absolute right-6 top-1/2 -translate-y-1/2">
+            <div class="ctix-search-loader"></div>
+        </div>
     </div>
 
     {{-- Search Panel --}}
@@ -411,13 +415,45 @@
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50%       { transform: translateX(-50%) translateY(-10px); }
 }
+
 .line-clamp-1 {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-.aspect-\[2\/3\] { aspect-ratio: 2/3; }
+
+.aspect-\[2\/3\] { 
+    aspect-ratio: 2/3; 
+}
+
+/* Search thinking loader */
+.ctix-search-loader {
+    width: 28px;
+    height: 28px;
+    border-radius: 9999px;
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent 0deg 235deg,
+            rgba(248, 113, 113, 0.25) 236deg 265deg,
+            rgba(239, 68, 68, 0.6) 266deg 310deg,
+            #ef4444 311deg 360deg
+        );
+    -webkit-mask: radial-gradient(farthest-side, transparent 58%, #000 60%);
+    mask: radial-gradient(farthest-side, transparent 58%, #000 60%);
+    animation: ctixSearchStepSpin 0.55s steps(12, end) infinite;
+}
+
+@keyframes ctixSearchStepSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
 </style>
 
 <script>
@@ -425,6 +461,7 @@ const searchInput = document.getElementById('searchInput');
 const searchPanel = document.getElementById('searchPanel');
 const searchBackdrop = document.getElementById('searchBackdrop');
 const searchLoading = document.getElementById('searchLoading');
+const searchThinkingIcon = document.getElementById('searchThinkingIcon');
 
 const filmResults = document.getElementById('filmResults');
 const bioskopResults = document.getElementById('bioskopResults');
@@ -559,6 +596,10 @@ function renderSearchResults() {
 function fetchSearchResults(keyword) {
     searchLoading.classList.remove('hidden');
 
+    if (searchThinkingIcon) {
+    searchThinkingIcon.classList.remove('hidden');
+    }
+
     fetch(`{{ route('search.suggestions') }}?q=${encodeURIComponent(keyword)}`)
         .then(response => response.json())
         .then(data => {
@@ -571,6 +612,10 @@ function fetchSearchResults(keyword) {
         })
         .finally(() => {
             searchLoading.classList.add('hidden');
+
+            if (searchThinkingIcon) {
+                searchThinkingIcon.classList.add('hidden');
+            }
         });
 }
 
