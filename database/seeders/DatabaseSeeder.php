@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
             StudioSeeder::class,
             SeatSeeder::class,
             ScheduleSeeder::class,
+            StudioLocationSeeder::class,
+            CinemaScheduleSeeder::class,
         ]);
     }
 }

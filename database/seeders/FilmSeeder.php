@@ -50,23 +50,6 @@ class FilmSeeder extends Seeder
             ],
 
             [
-                'judul'        => 'The Spider',
-                'sinopsis'     => 'Peter Parker mengalami transformasi mengerikan setelah kejadian misterius mengubah tubuhnya menjadi sesuatu yang menyeramkan. Film horor pendek ini menghadirkan reinterpretasi gelap asal-usul Spider-Man dengan nuansa body-horror yang intens.',
-                'durasi'       => 9,
-                'genre'        => 'Horror',
-                'poster'       => '/spider.jpg',
-                'backdrop'     => '/bd_spider.png',
-                'rating'       => 4.5,
-                'rating_count' => 8500,
-                'age_rating'   => 'R',
-                'trailer'      => 'https://www.youtube.com/embed/1-tc2YlCqCk?si=PYBPih4OoPGi0yAv',
-                'director'     => 'Andy Chen',
-                'cast'         => json_encode(['Chandler Riggs']),
-                'release_date' => '2024-10-25',
-                'status'       => 'now_showing',
-            ],
-
-            [
                 'judul'        => 'Ayah Ini Arahnya Kemana',
                 'sinopsis'     => 'Kisah mengharukan tentang perjalanan seorang ayah mencari makna hidup untuk keluarganya.',
                 'durasi'       => 172,
@@ -182,6 +165,23 @@ class FilmSeeder extends Seeder
                 'director'     => 'Kelsey Mann',
                 'cast'         => json_encode(['Amy Poehler', 'Phyllis Smith', 'Lewis Black']),
                 'release_date' => '2024-05-01',
+                'status'       => 'now_showing',
+            ],
+
+            [
+                'judul'        => 'Agak Laen 2',
+                'sinopsis'     => 'Empat sahabat Bene, Boris, Jegel, dan Oki kembali beraksi dalam petualangan komedi baru. Kali ini mereka menyamar di sebuah panti jompo untuk mengungkap kasus misterius yang penuh kekacauan dan kejadian absurd.',
+                'durasi'       => 122,
+                'genre'        => 'Comedy, Mystery',
+                'poster'       => '/agakLaen.jpg',
+                'backdrop'     => '/bd_agakLaen.webp',
+                'rating'       => 4.7,
+                'rating_count' => 9125,
+                'age_rating'   => '13+',
+                'trailer'      => 'https://www.youtube.com/embed/fYjJ6zP2Cp0?si=czyfGwlUemKdDUqw',
+                'director'     => 'Muhadkly Acho',
+                'cast'         => json_encode(['Bene Dion','Boris Bokir','Indra Jegel','Oki Rengga','Tissa Biani']),
+                'release_date' => '2025-11-27',
                 'status'       => 'now_showing',
             ],
 
